@@ -218,6 +218,28 @@ def test_sort_rejects_non_comparable_items(sort) -> None:
         sort([1, "a"])
 
 
+import pytest
+from sorts.slowsort import slowsort
+
+
+def test_slowsort_comparable_types():
+    # Test with strings
+    words = ["banana", "apple", "cherry", "date"]
+    slowsort(words)
+    assert words == ["apple", "banana", "cherry", "date"]
+
+    # Test with floats and negative numbers
+    floats = [3.14, -1.0, 2.5, 0.0]
+    slowsort(floats)
+    assert floats == [-1.0, 0.0, 2.5, 3.14]
+
+
+def test_slowsort_type_error_on_incomparable():
+    mixed = [1, "a"]
+    with pytest.raises(TypeError):
+        slowsort(mixed)
+
+
 def test_rec_insertion_sort_rejects_non_comparable_items() -> None:
     with pytest.raises(TypeError):
         rec_insertion_sort([1, "a"], 2)

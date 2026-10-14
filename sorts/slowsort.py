@@ -11,14 +11,17 @@ Source: https://en.wikipedia.org/wiki/Slowsort
 
 from __future__ import annotations
 
-from typing import Protocol
+from typing import Protocol, TypeVar
 
 
 class Comparable(Protocol):
     def __lt__(self, other: object, /) -> bool: ...
 
 
-def slowsort[T: Comparable](
+T = TypeVar("T", bound=Comparable)
+
+
+def slowsort(
     sequence: list[T], start: int | None = None, end: int | None = None
 ) -> None:
     """
@@ -28,14 +31,6 @@ def slowsort[T: Comparable](
     It returns None.
     >>> seq = [1, 6, 2, 5, 3, 4, 4, 5]; slowsort(seq); seq
     [1, 2, 3, 4, 4, 5, 5, 6]
-    >>> seq = ["c", "a", "b"]; slowsort(seq); seq
-    ['a', 'b', 'c']
-    >>> seq = [2.5, -1, 0.0]; slowsort(seq); seq
-    [-1, 0.0, 2.5]
-    >>> slowsort([1, "a"])
-    Traceback (most recent call last):
-    ...
-    TypeError: '<' not supported between instances of 'str' and 'int'
     >>> seq = []; slowsort(seq); seq
     []
     >>> seq = [2]; slowsort(seq); seq
@@ -50,6 +45,10 @@ def slowsort[T: Comparable](
     [5, 6, 7, 8, 9, 4, 3, 2, 1, 0]
     >>> seq = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]; slowsort(seq, start = 5); seq
     [9, 8, 7, 6, 5, 0, 1, 2, 3, 4]
+    >>> seq = ["cherry", "banana", "apple", "date"]; slowsort(seq); seq
+    ['apple', 'banana', 'cherry', 'date']
+    >>> seq = [3.14, -1.0, 2.5, 0.0]; slowsort(seq); seq
+    [-1.0, 0.0, 2.5, 3.14]
     """
     if start is None:
         start = 0
